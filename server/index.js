@@ -13,9 +13,7 @@ const recommendedSongsRouter = require('./recommended_songs');
 const createPlaylistRouter = require('./create_playlist');
 
 app.use(express.json());
-app.use(cors({
-  origin: 'https://localhost:3000',
-}));
+app.use(cors());
 
 app.use('/', authRouter);
 app.use('/user', userRouter);
