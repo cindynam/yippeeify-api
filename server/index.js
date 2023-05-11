@@ -12,7 +12,9 @@ const topArtistsRouter = require('./top_artists');
 const recommendedSongsRouter = require('./recommended_songs');
 const createPlaylistRouter = require('./create_playlist');
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+}));
 app.use(express.json());
 
 app.use('/', authRouter);
