@@ -14,7 +14,7 @@ const createPlaylistRouter = require('./create_playlist');
 
 app.use(express.json());
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'https://localhost:3000',
 }));
 
 app.use('/', authRouter);
