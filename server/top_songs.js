@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const fetch = require('node-fetch');
 
 router.get('/', async (req, res) => {
   let token = req.query.token;
