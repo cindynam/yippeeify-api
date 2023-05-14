@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
     for(let i = 0; i < 3; i++){
         if(trackSeeds.length > 0){
             let random = Math.floor(Math.random() * trackSeeds.length);
-            seeds.tracks.push(trackSeeds[random]?.id);
+            seeds.tracks.push(trackSeeds[random].id);
             trackSeeds.splice(random, 1);
         }
     }
@@ -39,14 +39,16 @@ router.get('/', async (req, res) => {
 
 
     // get recommended tracks based on top tracks
-    let data = await fetch(`https://api.spotify.com/v1/recommendations?limit=100&seed_artists=${seeds.artists.join(',')}&seed_tracks=${seeds.tracks.join(',')}&max_popularity=85`, {
+    let data = await fetch(`https://api.spotify.com/v1/recommendations?limit=100&seed_artists=${seeds.artists.join(',')}&seed_tracks=${seeds.tracks.join(',')}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`
         }
     });
     data = await data.json();
-    data = data.tracks.filter(track => !topArtists.includes(track.artists[0].name))
+    data = data.tracks
+        .filter(track => !topArtists.includes(track.artists[0].name))
+        .slice(0,20)
         .map(track => {
             return {
                 id: track.id,
@@ -62,7 +64,7 @@ router.get('/', async (req, res) => {
         });
 
     res.send({
-        data: data.slice(0,20)
+        data: data
     });
 });
 
