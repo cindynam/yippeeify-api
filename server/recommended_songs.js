@@ -4,6 +4,7 @@ const fetch = require('node-fetch');
 router.get('/', async (req, res) => {
     let token = req.query.token;
 
+    // Get top tracks and artists.
     let trackSeeds = await fetch('https://api.spotify.com/v1/me/top/tracks?time_range=medium_term&limit=20&offset=0', {
         method: 'GET',
         headers: {
@@ -11,6 +12,7 @@ router.get('/', async (req, res) => {
         }
     });
     trackSeeds = await trackSeeds.json();
+
     let artistSeeds = await fetch('https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=10&offset=0', {
         method: 'GET',
         headers: {
@@ -18,10 +20,14 @@ router.get('/', async (req, res) => {
         }
     });
     artistSeeds = await artistSeeds.json();
+
     artistSeeds = artistSeeds.items;
     trackSeeds = trackSeeds.items;
+
     const topArtists = artistSeeds.map(artist => artist.name);
     const topTracks = trackSeeds.slice(0,10).map(track => track.name);
+
+    // Get 3 random tracks and 2 random artists.
     let seeds = {artists:[], tracks:[]}
     for(let i = 0; i < 3; i++){
         if(trackSeeds.length > 0){
@@ -39,7 +45,7 @@ router.get('/', async (req, res) => {
     }
 
 
-    // get recommended tracks based on top tracks
+    // Get recommended tracks based on top tracks.
     let data = await fetch(`https://api.spotify.com/v1/recommendations?limit=100&seed_artists=${seeds.artists.join(',')}&seed_tracks=${seeds.tracks.join(',')}`, {
         method: 'GET',
         headers: {
@@ -47,6 +53,7 @@ router.get('/', async (req, res) => {
         }
     });
     data = await data.json();
+    // Filter out tracks that are already in top tracks or top artists, return 20 tracks after filtering.
     data = data.tracks
         .filter(track => (!topArtists.includes(track.artists[0].name) && !topTracks.includes(track.name)))
         .slice(0,20)
