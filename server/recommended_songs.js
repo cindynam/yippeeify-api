@@ -19,9 +19,9 @@ router.get('/', async (req, res) => {
     });
     artistSeeds = await artistSeeds.json();
     artistSeeds = artistSeeds.items;
+    trackSeeds = trackSeeds.items;
     const topArtists = artistSeeds.map(artist => artist.name);
     const topTracks = trackSeeds.slice(0,10).map(track => track.name);
-    trackSeeds = trackSeeds.items;
     let seeds = {artists:[], tracks:[]}
     for(let i = 0; i < 3; i++){
         if(trackSeeds.length > 0){
