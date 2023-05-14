@@ -4,39 +4,65 @@ const fetch = require('node-fetch');
 router.get('/', async (req, res) => {
     let token = req.query.token;
 
-    let trackSeeds = await fetch('https://api.spotify.com/v1/me/top/tracks?time_range=medium_term&limit=5&offset=0', {
+    let trackSeeds = await fetch('https://api.spotify.com/v1/me/top/tracks?time_range=medium_term&limit=20&offset=0', {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`
         }
     });
     trackSeeds = await trackSeeds.json();
-    trackSeeds = trackSeeds.items.map(trackObject => trackObject.id).join(',');
+    let artistSeeds = await fetch('https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=10&offset=0', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+    artistSeeds = await artistSeeds.json();
+    artistSeeds = artistSeeds.items;
+    const topArtists = artistSeeds.slice(0,5).map(artist => artist.name);
+    trackSeeds = trackSeeds.items;
+    let seeds = {artists:[], tracks:[]}
+    for(let i = 0; i < 3; i++){
+        if(trackSeeds.length > 0){
+            let random = Math.floor(Math.random() * trackSeeds.length);
+            seeds.tracks.push(trackSeeds[random]?.id);
+            trackSeeds.splice(random, 1);
+        }
+    }
+    for(let i = 0; i < 2; i++){
+        if(artistSeeds.length > 0){
+            let random = Math.floor(Math.random() * artistSeeds.length);
+            seeds.artists.push(artistSeeds[random].id);
+            artistSeeds.splice(random, 1);
+        }
+    }
 
 
     // get recommended tracks based on top tracks
-    let data = await fetch(`https://api.spotify.com/v1/recommendations?seed_tracks=${trackSeeds}&max_popularity=75`, {
+    let data = await fetch(`https://api.spotify.com/v1/recommendations?limit=100&seed_artists=${seeds.artists.join(',')}&seed_tracks=${seeds.tracks.join(',')}&max_popularity=85`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`
         }
     });
     data = await data.json();
-    data = data.tracks.map(track => {
-        return {
-            id: track.id,
-            name: track.name,
-            artists: track.artists.map(artist => artist.name).join(', '),
-            image: track.album.images[0].url,
-            link: track.external_urls.spotify,
-            popularity: track.popularity,
-            duration: Math.trunc(track.duration_ms / 1000),
-            uri: track.uri,
-            previewUrl: track.preview_url
-        }
-    });
+    data = data.tracks.filter(track => !topArtists.includes(track.artists[0].name))
+        .map(track => {
+            return {
+                id: track.id,
+                name: track.name,
+                artists: track.artists.map(artist => artist.name).join(', '),
+                image: track.album.images[0].url,
+                link: track.external_urls.spotify,
+                popularity: track.popularity,
+                duration: Math.trunc(track.duration_ms / 1000),
+                uri: track.uri,
+                previewUrl: track.preview_url
+            }
+        });
+
     res.send({
-        data: data
+        data: data.slice(0,20)
     });
 });
 
