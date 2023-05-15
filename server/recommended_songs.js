@@ -13,6 +13,7 @@ router.get('/', async (req, res) => {
             }
         });
         trackSeeds = await trackSeeds.json();
+        console.log('trackSeeds: ' + trackSeeds);
 
         let artistSeeds = await fetch('https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=10&offset=0', {
             method: 'GET',
@@ -21,6 +22,7 @@ router.get('/', async (req, res) => {
             }
         });
         artistSeeds = await artistSeeds.json();
+        console.log('artistSeeds: ' + artistSeeds);
 
         artistSeeds = artistSeeds.items;
         trackSeeds = trackSeeds.items;

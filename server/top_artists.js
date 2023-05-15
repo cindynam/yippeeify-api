@@ -14,6 +14,7 @@ router.get('/', async (req, res) => {
             }
         });
         data = await data.json();
+        console.log('Top artists: ' + data);
         data = data.items.map(artistObject => {
             return {
                 image: artistObject.images[0].url,
