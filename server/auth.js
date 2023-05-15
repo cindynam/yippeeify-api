@@ -23,7 +23,7 @@ router.post('/token', async (req, res) => {
       body: `code=${req.body.code}&grant_type=authorization_code&redirect_uri=${SPOTIFY_REDIRECT_URI}`
     })
     token = await token.json();
-    console.log('token: ' + token);
+    console.log('token: ' + token.access_token);
 
     res.send({
       token: token.access_token,
