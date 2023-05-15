@@ -11,6 +11,7 @@ router.get('/', async (req, res) => {
             }
         });
         data = await data.json();
+        console.log('user data: ' + data);
         
         res.send({
             id: data.id,

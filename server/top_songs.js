@@ -13,8 +13,8 @@ router.get('/', async (req, res) => {
         'Authorization': `Bearer ${token}`
       }
     });
-    data = await data.json();
     console.log('Top tracks: ' + data);
+    data = await data.json();
     data = data.items.map(trackObject => {
       return {
         image: trackObject.album.images[0].url,

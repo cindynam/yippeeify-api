@@ -13,8 +13,9 @@ router.get('/', async (req, res) => {
                 'Authorization': `Bearer ${token}`
             }
         });
-        data = await data.json();
         console.log('Top artists: ' + data);
+        data = await data.json();
+        
         data = data.items.map(artistObject => {
             return {
                 image: artistObject.images[0].url,

@@ -12,17 +12,18 @@ router.get('/', async (req, res) => {
                 'Authorization': `Bearer ${token}`
             }
         });
-        trackSeeds = await trackSeeds.json();
         console.log('trackSeeds: ' + trackSeeds);
-
+        trackSeeds = await trackSeeds.json();
+        
+        
         let artistSeeds = await fetch('https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=10&offset=0', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
+        console.log('Top artists: ' + artistSeeds);
         artistSeeds = await artistSeeds.json();
-        console.log('artistSeeds: ' + artistSeeds);
 
         artistSeeds = artistSeeds.items;
         trackSeeds = trackSeeds.items;
