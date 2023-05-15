@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
             }
         });
         trackSeeds = await trackSeeds.json();
-
+        
         let artistSeeds = await fetch('https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=10&offset=0', {
             method: 'GET',
             headers: {

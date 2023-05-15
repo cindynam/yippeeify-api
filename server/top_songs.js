@@ -14,6 +14,7 @@ router.get('/', async (req, res) => {
       }
     });
     data = await data.json();
+    
     data = data.items.map(trackObject => {
       return {
         image: trackObject.album.images[0].url,
