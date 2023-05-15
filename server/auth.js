@@ -1,6 +1,6 @@
 const express = require('express');
 const fetch = require('node-fetch');
-const crypto = require('crypto');
+const { getRandomValues } = await import('node:crypto');
 const router = express.Router();
 
 const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
@@ -9,7 +9,7 @@ const SPOTIFY_REDIRECT_URI = process.env.SPOTIFY_REDIRECT_URI;
 
 router.get('/login', async (req, res) => {
   let arr = new Uint32Array(3);
-  crypto.getRandomValues(arr);
+  getRandomValues(arr);
   state = arr.join('');
   console.log(state);
   let scope = 'user-read-private user-read-email user-top-read user-library-read playlist-modify-private playlist-modify-public ugc-image-upload';
