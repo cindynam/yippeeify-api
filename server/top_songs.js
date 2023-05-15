@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
       }
     });
     data = await data.json();
-    
+
     data = data.items.map(trackObject => {
       return {
         image: trackObject.album.images[0].url,
@@ -32,7 +32,6 @@ router.get('/', async (req, res) => {
     });
 
   } catch (error) {
-    console.log(error);
     res.status(404).send({ error: error });
   }
 });

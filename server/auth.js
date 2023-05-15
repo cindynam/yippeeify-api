@@ -8,8 +8,15 @@ const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 const SPOTIFY_REDIRECT_URI = process.env.SPOTIFY_REDIRECT_URI;
 
 router.get('/login', async (req, res) => {
+  let arr = new Uint32Array(3);
+  window.crypto.getRandomValues(arr);
+  state = arr.join('');
+  console.log(state);
   let scope = 'user-read-private user-read-email user-top-read user-library-read playlist-modify-private playlist-modify-public ugc-image-upload';
-  res.send({ url: `https://accounts.spotify.com/authorize?client_id=${SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri=${SPOTIFY_REDIRECT_URI}&scope=${scope}` });
+  res.send({ 
+    url: `https://accounts.spotify.com/authorize?client_id=${SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri=${SPOTIFY_REDIRECT_URI}&scope=${scope}&state=${state}`,
+    state: state
+  });
 });
 
 router.post('/token', async (req, res) => {
@@ -31,7 +38,6 @@ router.post('/token', async (req, res) => {
     });
 
   } catch (error) {
-    console.log(error);
     res.status(404).send({ error: error });
   }
 });
