@@ -45,7 +45,7 @@ router.get('/', async (req, res) => {
             }
         }
 
-        // Get recommended tracks based on top tracks.
+        // Get recommended tracks based on seeds.
         let data = await fetch(`https://api.spotify.com/v1/recommendations?limit=100&seed_artists=${seeds.artists.join(',')}&seed_tracks=${seeds.tracks.join(',')}`, {
             method: 'GET',
             headers: {
