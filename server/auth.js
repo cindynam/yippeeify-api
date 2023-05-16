@@ -11,7 +11,6 @@ router.get('/login', async (req, res) => {
   for(let i = 0; i < 32; i++){
     state += Math.floor(Math.random()*10);
   }
-  console.log(state);
   let scope = 'user-read-private user-read-email user-top-read user-library-read playlist-modify-private playlist-modify-public ugc-image-upload';
   res.send({ 
     url: `https://accounts.spotify.com/authorize?client_id=${SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri=${SPOTIFY_REDIRECT_URI}&scope=${scope}&state=${state}`,
@@ -30,7 +29,6 @@ router.post('/token', async (req, res) => {
       body: `code=${req.body.code}&grant_type=authorization_code&redirect_uri=${SPOTIFY_REDIRECT_URI}`
     })
     token = await token.json();
-    console.log('token: ' + token.access_token);
 
     res.send({
       token: token.access_token,
