@@ -1,6 +1,6 @@
 const express = require('express');
 const fetch = require('node-fetch');
-const { getRandomValues } = await import('node:crypto');
+const { getRandomValues } = require('node:crypto');
 const router = express.Router();
 
 const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
