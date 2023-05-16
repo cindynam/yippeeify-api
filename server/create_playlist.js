@@ -5,9 +5,7 @@ const playlistImage = '/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBUOD
 
 router.post('/', async (req, res) => {
     try {
-        let token = req.body.token;
-        let userId = req.body.userId;
-        let songUris = req.body.songUris;
+        let {token, userId, songUris} = req.body;
         // Creates a playlist for the user
         let playlist = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
             method: 'POST',

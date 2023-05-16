@@ -5,7 +5,7 @@ router.get('/', async (req, res) => {
     try {
         let token = req.query.token;
         let timeframe = req.query.timeframe;
-        let url = `https://api.spotify.com/v1/me/top/artists?time_range=${timeframe}&limit=20&offset=0`;
+        let url = `https://api.spotify.com/v1/me/top/artists?time_range=${timeframe}&limit=9&offset=0`;
 
         let data = await fetch(url, {
             method: 'GET',
